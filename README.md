@@ -12,10 +12,10 @@ npm install
 
 The ethereum package contains all the contracts, migrations and tests.
 
-More information to [Kickstart ethereum](https://github.com/tonidalmases/kickstart/packages/kickstart-ethereum/README.md).
+More information to [Kickstart ethereum](https://github.com/tonidalmases/kickstart/tree/master/packages/kickstart-ethereum).
 
 ## React client
 
 The client package contains the react client.
 
-More information to [Kickstart client](https://github.com/tonidalmases/kickstart/packages/kickstart-client/README.md).
+More information to [Kickstart client](https://github.com/tonidalmases/kickstart/tree/master/packages/kickstart-client).

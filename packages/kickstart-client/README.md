@@ -4,7 +4,7 @@ This package contains the React client, using the [Next](https://nextjs.org/) fr
 
 ## Deployment in localhost
 
-Open a terminal to `packages/kickstart-client/` and then type:
+Open a terminal to `packages/kickstart-client/` and type:
 
 ```bash
 npm run dev
