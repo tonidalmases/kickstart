@@ -25,7 +25,7 @@ contract Campaign {
     uint256 public minimumContribution;
 
     mapping(address => bool) public contributors;
-    uint256 contributorsCount;
+    uint256 public contributorsCount;
 
     constructor(uint256 minimum, address sender) {
         manager = sender;

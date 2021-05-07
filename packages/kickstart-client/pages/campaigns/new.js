@@ -1,9 +1,9 @@
 import Layout from '../../components/Layout';
 import { Form, Button, Input, Message } from 'semantic-ui-react';
 import { useState } from 'react';
-import { getFactoryContract } from '../../services/contract.service';
-import { getAccounts } from '../../services/accounts.service';
 import { useRouter } from 'next/router';
+import web3 from '../../services/web3.service';
+import { Factory } from '../../services/contract.service';
 
 function NewCampaign() {
   const [minimumContribution, setMinimumContribution] = useState('');
@@ -17,8 +17,8 @@ function NewCampaign() {
     setErrorMessage('');
 
     try {
-      const factory = getFactoryContract();
-      const accounts = await getAccounts();
+      const factory = Factory();
+      const accounts = await web3.eth.getAccounts();
 
       const campaign = await factory.methods
         .createCampaign(minimumContribution)

@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
-import { getCampaignContract } from '../../services/contract.service';
-import { Card, Grid } from 'semantic-ui-react';
-import web3 from '../../services/web3.service';
-import ContributeForm from '../../components/ContributeForm';
+import { useRouter } from 'next/router';
+import Layout from '../../../components/Layout';
+import { Button, Card, Grid } from 'semantic-ui-react';
+import Link from 'next/link';
+import ContributeForm from '../../../components/ContributeForm';
+import { Campaign } from '../../../services/contract.service';
+import web3 from '../../../services/web3.service';
 
 const buildCards = (summary) => {
   return [
@@ -51,7 +52,7 @@ function ShowCampaign() {
 
   const fetchSummary = async () => {
     if (address) {
-      const campaign = getCampaignContract(address);
+      const campaign = Campaign(address);
       const summary = await campaign.methods.getSummary().call();
 
       setCards(buildCards(summary));
@@ -63,15 +64,25 @@ function ShowCampaign() {
       <h3>Campaign details</h3>
 
       <Grid>
-        <Grid.Column width="10">
-          <Card.Group items={cards} />
-        </Grid.Column>
-        <Grid.Column width="6">
-          <ContributeForm
-            address={address}
-            onContributionSuccess={fetchSummary}
-          ></ContributeForm>
-        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width="10">
+            <Card.Group items={cards} />
+          </Grid.Column>
+          <Grid.Column width="6">
+            <ContributeForm
+              address={address}
+              onContributionSuccess={fetchSummary}
+            ></ContributeForm>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column>
+            <Link href={`/campaigns/${address}/requests`}>
+              <Button primary>Requests</Button>
+            </Link>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Layout>
   );

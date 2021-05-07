@@ -53,6 +53,41 @@ contract('Campaign', (accounts) => {
     assert.equal(request.approvalsCount, '0');
   });
 
+  it('should get the summary', async () => {
+    const summary = await campaign.getSummary.call();
+
+    assert.equal(summary.manager, accounts[0]);
+    assert.equal(summary.minimumContribution, 100);
+    assert.equal(summary.contributorsCount, 0);
+    assert.equal(summary.balance, 0);
+    assert.equal(summary.requestsCount, 0);
+  });
+
+  it('should get the contributors count', async () => {
+    await campaign.contribute({ from: accounts[1], value: '200' });
+    await campaign.contribute({ from: accounts[2], value: '200' });
+
+    const count = await campaign.contributorsCount.call();
+
+    assert.equal(count, 2);
+  });
+
+  it('should get requests count', async () => {
+    await campaign.createRequest(
+      'Buy batteries',
+      web3.utils.toWei('5', 'ether'),
+      accounts[1],
+      {
+        from: accounts[0],
+        gas: '1000000',
+      }
+    );
+
+    const count = await campaign.requestsCount.call();
+
+    assert.equal(count, 1);
+  });
+
   it('should process a request', async () => {
     await campaign.createRequest(
       'Buy batteries',
@@ -83,15 +118,5 @@ contract('Campaign', (accounts) => {
     balance = parseFloat(balance);
 
     assert(balance > 104);
-  });
-
-  it('should get the summary', async () => {
-    const summary = await campaign.getSummary.call();
-
-    assert.equal(summary.manager, accounts[0]);
-    assert.equal(summary.minimumContribution, 100);
-    assert.equal(summary.contributorsCount, 0);
-    assert.equal(summary.balance, 0);
-    assert.equal(summary.requestsCount, 0);
   });
 });

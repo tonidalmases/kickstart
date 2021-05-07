@@ -1,8 +1,7 @@
 import { Form, Button, Input, Message } from 'semantic-ui-react';
 import { useState } from 'react';
-import { getAccounts } from '../services/accounts.service';
-import { getCampaignContract } from '../services/contract.service';
 import web3 from '../services/web3.service';
+import { Campaign } from '../services/contract.service';
 
 function ContributeForm({ address, onContributionSuccess }) {
   const [contribution, setContribution] = useState('');
@@ -14,14 +13,15 @@ function ContributeForm({ address, onContributionSuccess }) {
     setErrorMessage('');
 
     try {
-      const campaign = getCampaignContract(address);
-      const accounts = await getAccounts();
+      const campaign = Campaign(address);
+      const accounts = await web3.eth.getAccounts();
 
       await campaign.methods.contribute().send({
         from: accounts[0],
         value: web3.utils.toWei(contribution, 'ether'),
       });
 
+      setContribution('');
       onContributionSuccess();
     } catch (err) {
       setErrorMessage(err.message);
